@@ -1,0 +1,102 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Qn.5"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import networkx as nx\n",
+    "from scipy import sparse"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Eigenvalues:\n",
+      "              0\n",
+      "0  4.775713e+00\n",
+      "1  3.589216e+00\n",
+      "2  2.276258e+00\n",
+      "3 -1.853642e-16\n",
+      "4  3.588135e-01\n",
+      "5  4.000000e+00\n",
+      "6  1.000000e+00\n",
+      "Eigenvectors:\n",
+      "          0         1         2         3         4             5  \\\n",
+      "0  0.229639 -0.447077 -0.651491 -0.377964 -0.424372 -1.277115e-16   \n",
+      "1 -0.318705  0.355251  0.089990 -0.377964 -0.348236 -7.071068e-01   \n",
+      "2 -0.318705  0.355251  0.089990 -0.377964 -0.348236  7.071068e-01   \n",
+      "3  0.654996 -0.117493  0.626630 -0.377964 -0.147149  4.936800e-16   \n",
+      "4 -0.525674 -0.641272  0.273539 -0.377964  0.307824 -7.288100e-16   \n",
+      "5  0.139225  0.247671 -0.214329 -0.377964  0.480085  8.592741e-17   \n",
+      "6  0.139225  0.247671 -0.214329 -0.377964  0.480085  8.592741e-17   \n",
+      "\n",
+      "              6  \n",
+      "0  1.069857e-32  \n",
+      "1  2.616821e-17  \n",
+      "2 -2.616821e-17  \n",
+      "3 -2.264469e-32  \n",
+      "4 -6.372400e-33  \n",
+      "5 -7.071068e-01  \n",
+      "6  7.071068e-01  \n"
+     ]
+    }
+   ],
+   "source": [
+    "L = np.array([[2,-1,-1,0,0,0,0],[-1,3,-1,-1,0,0,0],[-1,-1,3,-1,0,0,0],[0,-1,-1,3,-1,0,0],[0,0,0,-1,3,-1,-1],[0,0,0,0,-1,1,0],[0,0,0,0,-1,0,1]])\n",
+    "eigval, eigvec = np.linalg.eig(L)\n",
+    "eigval=pd.DataFrame(eigval)\n",
+    "eigvec=pd.DataFrame(eigvec)\n",
+    "\n",
+    "print(\"Eigenvalues:\")\n",
+    "print(eigval)\n",
+    "print(\"Eigenvectors:\")\n",
+    "print(eigvec)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
