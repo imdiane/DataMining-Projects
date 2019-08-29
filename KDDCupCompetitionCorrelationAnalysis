@@ -1,0 +1,24 @@
+outfile = open('/user.txt','w')
+
+for line in sns:
+    values2 = aline.split( )
+    followees = values2[0].values_count()
+    followers = values2[1].values_count()   
+    
+n==0 #followers
+m==1 #followees
+
+for line in sns:
+    values2 = aline.split( )
+    for line in sns:
+    if values2[0] == values1[0]:
+        n=n+1
+         
+    if values2[1] == values1[0]:
+        m=m+1
+    
+    dataline2 = ','+ values2[0]+values2[1]
+    outfile.write(dataline2 + '\n')
+    
+sns.close()
+outfile.close()
