@@ -1,0 +1,693 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Qn6."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Spam email information:(train set)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>wf_make</th>\n",
+       "      <th>wf_address</th>\n",
+       "      <th>wf_all</th>\n",
+       "      <th>wf_3d</th>\n",
+       "      <th>wf_our</th>\n",
+       "      <th>wf_over</th>\n",
+       "      <th>wf_remove</th>\n",
+       "      <th>wf_internet</th>\n",
+       "      <th>wf_order</th>\n",
+       "      <th>wf_mail</th>\n",
+       "      <th>...</th>\n",
+       "      <th>cf_;</th>\n",
+       "      <th>cf_(</th>\n",
+       "      <th>cf_[</th>\n",
+       "      <th>cf_!</th>\n",
+       "      <th>cf_$</th>\n",
+       "      <th>cf_#</th>\n",
+       "      <th>crl_average</th>\n",
+       "      <th>crl_longest</th>\n",
+       "      <th>crl_total</th>\n",
+       "      <th>IsSpam</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0.18</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.09</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.36</td>\n",
+       "      <td>0.09</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.36</td>\n",
+       "      <td>0.09</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.059</td>\n",
+       "      <td>0.029</td>\n",
+       "      <td>0.029</td>\n",
+       "      <td>0.014</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>4.192</td>\n",
+       "      <td>48</td>\n",
+       "      <td>566</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>1.001</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2.701</td>\n",
+       "      <td>20</td>\n",
+       "      <td>181</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>1.40</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.497</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1.722</td>\n",
+       "      <td>10</td>\n",
+       "      <td>31</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>0.00</td>\n",
+       "      <td>1.72</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>1.72</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.125</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.251</td>\n",
+       "      <td>0.251</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2.022</td>\n",
+       "      <td>12</td>\n",
+       "      <td>91</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1.000</td>\n",
+       "      <td>1</td>\n",
+       "      <td>5</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 58 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   wf_make  wf_address  wf_all  wf_3d  wf_our  wf_over  wf_remove  \\\n",
+       "0     0.18        0.00    0.09    0.0    0.36     0.09        0.0   \n",
+       "1     0.00        0.00    0.00    0.0    0.00     0.00        0.0   \n",
+       "2     0.00        0.00    1.40    0.0    0.00     0.00        0.0   \n",
+       "3     0.00        1.72    0.00    0.0    0.00     0.00        0.0   \n",
+       "4     0.00        0.00    0.00    0.0    0.00     0.00        0.0   \n",
+       "\n",
+       "   wf_internet  wf_order  wf_mail   ...     cf_;   cf_(   cf_[   cf_!   cf_$  \\\n",
+       "0         0.36      0.09     0.00   ...    0.000  0.059  0.029  0.029  0.014   \n",
+       "1         0.00      0.00     0.00   ...    1.001  0.000  0.000  0.000  0.000   \n",
+       "2         0.00      0.00     0.00   ...    0.000  0.000  0.000  0.497  0.000   \n",
+       "3         0.00      0.00     1.72   ...    0.000  0.125  0.000  0.251  0.251   \n",
+       "4         0.00      0.00     0.00   ...    0.000  0.000  0.000  0.000  0.000   \n",
+       "\n",
+       "   cf_#  crl_average  crl_longest  crl_total  IsSpam  \n",
+       "0   0.0        4.192           48        566       1  \n",
+       "1   0.0        2.701           20        181       0  \n",
+       "2   0.0        1.722           10         31       0  \n",
+       "3   0.0        2.022           12         91       1  \n",
+       "4   0.0        1.000            1          5       0  \n",
+       "\n",
+       "[5 rows x 58 columns]"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "spam_train = pd.read_csv('/Users/apple/Desktop/CSE881/Dataset-HW/spam_train.csv', sep=\",\", names=('wf_make', 'wf_address', 'wf_all', 'wf_3d', 'wf_our', 'wf_over', 'wf_remove', 'wf_internet', 'wf_order', 'wf_mail', 'wf_receive', 'wf_will', 'wf_people', 'wf_report', 'wf_addresses', 'wf_free', 'wf_business', 'wf_email', 'wf_you', 'wf_credit', 'wf_your', 'wf_font', 'wf_000', 'wf_money', 'wf_hp', 'wf_hpl', 'wf_george', 'wf_650', 'wf_lab', 'wf_labs', 'wf_telnet', 'wf_857', 'wf_data', 'wf_415', 'wf_85', 'wf_technology', 'wf_1999', 'wf_parts', 'wf_pm', 'wf_direct', 'wf_cs', 'wf_meeting', 'wf_original', 'wf_project', 'wf_re', 'wf_edu', 'wf_table', 'wf_conference', 'cf_;', 'cf_(', 'cf_[', 'cf_!', 'cf_$', 'cf_#', 'crl_average', 'crl_longest','crl_total', 'IsSpam'))\n",
+    "print('Spam email information:(train set)')\n",
+    "spam_train.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Spam email information:(test set)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>wf_make</th>\n",
+       "      <th>wf_address</th>\n",
+       "      <th>wf_all</th>\n",
+       "      <th>wf_3d</th>\n",
+       "      <th>wf_our</th>\n",
+       "      <th>wf_over</th>\n",
+       "      <th>wf_remove</th>\n",
+       "      <th>wf_internet</th>\n",
+       "      <th>wf_order</th>\n",
+       "      <th>wf_mail</th>\n",
+       "      <th>...</th>\n",
+       "      <th>cf_;</th>\n",
+       "      <th>cf_(</th>\n",
+       "      <th>cf_[</th>\n",
+       "      <th>cf_!</th>\n",
+       "      <th>cf_$</th>\n",
+       "      <th>cf_#</th>\n",
+       "      <th>crl_average</th>\n",
+       "      <th>crl_longest</th>\n",
+       "      <th>crl_total</th>\n",
+       "      <th>IsSpam</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.33</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.66</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.33</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>1.32</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.168</td>\n",
+       "      <td>0.392</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.224</td>\n",
+       "      <td>0.336</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>4.115</td>\n",
+       "      <td>42</td>\n",
+       "      <td>321</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.89</td>\n",
+       "      <td>1.14</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.12</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.12</td>\n",
+       "      <td>0.25</td>\n",
+       "      <td>0.12</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.185</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.371</td>\n",
+       "      <td>0.061</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2.878</td>\n",
+       "      <td>84</td>\n",
+       "      <td>475</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1.888</td>\n",
+       "      <td>5</td>\n",
+       "      <td>17</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.28</td>\n",
+       "      <td>0.42</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.132</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.022</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2.621</td>\n",
+       "      <td>70</td>\n",
+       "      <td>422</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.20</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>0.00</td>\n",
+       "      <td>...</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.204</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.034</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>2.588</td>\n",
+       "      <td>15</td>\n",
+       "      <td>277</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 58 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   wf_make  wf_address  wf_all  wf_3d  wf_our  wf_over  wf_remove  \\\n",
+       "0      0.0        0.00    0.33    0.0    0.66      0.0        0.0   \n",
+       "1      0.0        0.89    1.14    0.0    0.12      0.0        0.0   \n",
+       "2      0.0        0.00    0.00    0.0    0.00      0.0        0.0   \n",
+       "3      0.0        0.28    0.42    0.0    0.00      0.0        0.0   \n",
+       "4      0.0        0.00    0.00    0.0    0.20      0.0        0.0   \n",
+       "\n",
+       "   wf_internet  wf_order  wf_mail   ...     cf_;   cf_(  cf_[   cf_!   cf_$  \\\n",
+       "0         0.33      0.00     1.32   ...    0.168  0.392   0.0  0.224  0.336   \n",
+       "1         0.12      0.25     0.12   ...    0.000  0.185   0.0  0.371  0.061   \n",
+       "2         0.00      0.00     0.00   ...    0.000  0.000   0.0  0.000  0.000   \n",
+       "3         0.00      0.00     0.00   ...    0.000  0.132   0.0  0.022  0.000   \n",
+       "4         0.00      0.00     0.00   ...    0.000  0.204   0.0  0.034  0.000   \n",
+       "\n",
+       "   cf_#  crl_average  crl_longest  crl_total  IsSpam  \n",
+       "0   0.0        4.115           42        321       0  \n",
+       "1   0.0        2.878           84        475       1  \n",
+       "2   0.0        1.888            5         17       0  \n",
+       "3   0.0        2.621           70        422       0  \n",
+       "4   0.0        2.588           15        277       1  \n",
+       "\n",
+       "[5 rows x 58 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "spam_test = pd.read_csv('/Users/apple/Desktop/CSE881/Dataset-HW/spam_test.csv', sep=\",\", names=('wf_make', 'wf_address', 'wf_all', 'wf_3d', 'wf_our', 'wf_over', 'wf_remove', 'wf_internet', 'wf_order', 'wf_mail', 'wf_receive', 'wf_will', 'wf_people', 'wf_report', 'wf_addresses', 'wf_free', 'wf_business', 'wf_email', 'wf_you', 'wf_credit', 'wf_your', 'wf_font', 'wf_000', 'wf_money', 'wf_hp', 'wf_hpl', 'wf_george', 'wf_650', 'wf_lab', 'wf_labs', 'wf_telnet', 'wf_857', 'wf_data', 'wf_415', 'wf_85', 'wf_technology', 'wf_1999', 'wf_parts', 'wf_pm', 'wf_direct', 'wf_cs', 'wf_meeting', 'wf_original', 'wf_project', 'wf_re', 'wf_edu', 'wf_table', 'wf_conference', 'cf_;', 'cf_(', 'cf_[', 'cf_!', 'cf_$', 'cf_#', 'crl_average', 'crl_longest','crl_total', 'IsSpam'))\n",
+    "print('Spam email information:(test set)')\n",
+    "spam_test.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Y_train = spam_train['IsSpam']\n",
+    "X_train = spam_train.drop(['IsSpam'],axis = 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Y_test = spam_test['IsSpam']\n",
+    "X_test = spam_test.drop(['IsSpam'],axis = 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.naive_bayes import GaussianNB\n",
+    "from sklearn.ensemble import BaggingClassifier\n",
+    "from sklearn.neighbors import KNeighborsClassifier\n",
+    "from sklearn.model_selection import cross_val_score\n",
+    "from sklearn.ensemble import AdaBoostClassifier\n",
+    "from sklearn.metrics import accuracy_score"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "(1)  Gaussian naive Bayes classifier."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gnbtrainAcc = []\n",
+    "gnbtestAcc = []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "With Gaussian naive Bayes classifier, the accuracy score of train set is: 0.826000\n",
+      "With Gaussian naive Bayes classifier, the accuracy score of test set is: 0.812830\n"
+     ]
+    }
+   ],
+   "source": [
+    "gnb = GaussianNB()\n",
+    "ypred_gnb_train = gnb.fit(X_train, Y_train).predict(X_train)\n",
+    "ypred_gnb_test = gnb.fit(X_train, Y_train).predict(X_test)\n",
+    "\n",
+    "gnbtrainAcc.append(accuracy_score(Y_train, ypred_gnb_train))\n",
+    "gnbtestAcc.append(accuracy_score(Y_test, ypred_gnb_test))\n",
+    "\n",
+    "print(\"With Gaussian naive Bayes classifier, the accuracy score of train set is: %f\"%np.mean(gnbtrainAcc))\n",
+    "print(\"With Gaussian naive Bayes classifier, the accuracy score of test set is: %f\"%np.mean(gnbtestAcc))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thus, from above, the accuracy of the Gaussian naive Bayes classifier is 81.28%."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "(2) Bagging and boosting classifiers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "baggingtrainAcc = []\n",
+    "baggingtestAcc = []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "With Bagging classifier, the accuracy score of train set is: 0.909286\n",
+      "With Bagging classifier, the accuracy score of test set is: 0.866029\n"
+     ]
+    }
+   ],
+   "source": [
+    "bagging = BaggingClassifier(KNeighborsClassifier(),max_samples=500, max_features=10)\n",
+    "ypred_bagging_train = bagging.fit(X_train, Y_train).predict(X_train)\n",
+    "ypred_bagging_test = bagging.fit(X_train, Y_train).predict(X_test)\n",
+    "\n",
+    "baggingtrainAcc.append(accuracy_score(Y_train, ypred_bagging_train))\n",
+    "baggingtestAcc.append(accuracy_score(Y_test, ypred_bagging_test))\n",
+    "\n",
+    "print(\"With Bagging classifier, the accuracy score of train set is: %f\"%np.mean(baggingtrainAcc))\n",
+    "print(\"With Bagging classifier, the accuracy score of test set is: %f\"%np.mean(baggingtestAcc))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thus, from above, the accuracy of the Bagging classifier is 86.60%."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "boostingtrainAcc = []\n",
+    "boostingtestAcc = []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "With Boosting classifier, the accuracy score of train set is: 1.000000\n",
+      "With Boosting classifier, the accuracy score of test set is: 0.920855\n"
+     ]
+    }
+   ],
+   "source": [
+    "boosting = AdaBoostClassifier(n_estimators=500)\n",
+    "ypred_boosting_train = boosting.fit(X_train, Y_train).predict(X_train)\n",
+    "ypred_boosting_test = boosting.fit(X_train, Y_train).predict(X_test)\n",
+    "\n",
+    "boostingtrainAcc.append(accuracy_score(Y_train, ypred_boosting_train))\n",
+    "boostingtestAcc.append(accuracy_score(Y_test, ypred_boosting_test))\n",
+    "\n",
+    "print(\"With Boosting classifier, the accuracy score of train set is: %f\"%np.mean(boostingtrainAcc))\n",
+    "print(\"With Boosting classifier, the accuracy score of test set is: %f\"%np.mean(boostingtestAcc))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Thus, from above, the accuracy of the Boosting classifier is 92.09%."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.figure()\n",
+    "plt.title(\"Test Accuracies of Naive Bayes Classifier, Bagging Classifier, and Boosting Classifier\") \n",
+    "name_list = [\"Naive Bayes Classifier\", \"Bagging Classifier\", \"Boosting Classifier\"]\n",
+    "num_list = [np.mean(gnbtestAcc), np.mean(baggingtestAcc), np.mean(boostingtestAcc)]\n",
+    "plt.bar(range(len(num_list)), num_list,color='rgb',tick_label=name_list)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
