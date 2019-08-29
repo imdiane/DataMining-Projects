@@ -1,0 +1,18 @@
+library("arules")
+setwd("")
+bc <- read.csv("breast-cancer.csv",header = T)
+itemsets <- apriori(bc, parameter = list(support = 0.2, target = "frequent"))
+
+summary(itemsets)
+inspect(itemsets)
+
+itemsets <- data.frame(itemsets,stringsAsFactors = FALSE)
+write(itemsets,"itemsets.txt",quote = TRUE,sep = ",",row.names = FALSE)
+
+rules <- apriori(bc, parameter = list(supp = 0.2, conf = 0.7, target = "rules"))
+summary(rules)
+
+inspect(rules, by = "lift")
+
+rules <- data.frame(rules,stringsAsFactors = FALSE)
+write(rules,"rules.txt",quote = TRUE,sep = ",",row.names = FALSE)
